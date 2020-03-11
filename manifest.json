@@ -2,7 +2,7 @@
   "name": "Coronavirus Status",
   "short_name": "CVS",
   "description": "Coronavirus world-wide live status",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "permissions": ["storage"],
   "background": {
     "scripts": ["js/background.js"]

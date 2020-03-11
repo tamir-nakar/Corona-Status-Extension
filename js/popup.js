@@ -1,5 +1,7 @@
-const getData = () => {
-  fetch(
+let cache = null;
+
+const getDataAsync = async () => {
+  let res = await fetch(
     "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php",
     {
       method: "GET",
@@ -8,62 +10,154 @@ const getData = () => {
         "x-rapidapi-key": "95ecef83a2msh6f7dbf0fc606d0cp10442ejsn10e2bcd7d744"
       }
     }
-  )
-    .then(res => res.json())
-    .then(data =>
-      data.countries_stat.forEach(e =>
-        insert2(
-          e.country_name,
-          e.cases,
-          e.deaths,
-          e.total_recovered,
-          e.new_deaths,
-          e.new_cases
-        )
-      )
-    );
+  );
+  res = await res.json();
+  cache = res;
+  return res;
 };
 
-getData();
+function renderData(data) {
+  data.countries_stat.forEach((e, idx) =>
+    insert2(
+      idx + 1,
+      e.country_name,
+      e.cases,
+      e.deaths,
+      e.total_recovered,
+      e.new_deaths,
+      e.new_cases
+    )
+  );
+}
+
+function clearTable() {
+  const e = document.querySelector("#aliases");
+  Array.from(e.children).forEach(a => {
+    if (!a.hasAttribute("id", "total") && !a.hasAttribute("id", "tableHeader"))
+      e.removeChild(a);
+  });
+}
+function setCountryLoc(country, loc) {
+  chrome.storage.sync.set({[country]: loc});
+}
+
+function getCountryLoc(country) {
+  chrome.storage.sync.get([country], function(result) {
+    return result;
+  });
+}
+
+(async function init() {
+  const data = await getDataAsync();
+  renderData(data);
+  const total = calculateTotal(cache.countries_stat);
+  insert2(
+    "-",
+    total.country_name,
+    total.cases,
+    total.deaths,
+    total.total_recovered,
+    total.new_deaths,
+    total.new_cases,
+    false,
+    true
+  );
+})();
+
+function calculateTotal(data) {
+  const sum = cat =>
+    data.reduce((acc, curr) => acc + parseInt(curr[cat].replace(",", "")), 0);
+  return {
+    country_name: "TOTAL",
+    cases: sum("cases"),
+    deaths: sum("deaths"),
+    total_recovered: sum("total_recovered"),
+    new_deaths: sum("new_deaths"),
+    new_cases: sum("new_cases")
+  };
+}
 
 // Store newly input keys
 
 function insert2(
+  idx,
   country,
   cases,
   deaths,
   totalRecoverd,
   newDeaths,
   newCases,
-  isHeader
+  isHeader,
+  isTotal
 ) {
+  const anchor = document.querySelector("#aliases");
   const divElemToAdd = document.createElement("div");
   divElemToAdd.classList.add("flex-table");
   divElemToAdd.classList.add("row");
   divElemToAdd.classList.add("rowgroup");
+  let isHeaderSorted = "";
   if (isHeader) {
     divElemToAdd.setAttribute("id", "tableHeader");
+    isHeaderSorted = "sorted";
   }
-  const isYellow = newCases > 0 ? "yellow" : "";
-  const isRed = newDeaths > 0 ? "red" : "";
+  if (isTotal) {
+    divElemToAdd.setAttribute("id", "total");
+  }
+  const isYellow =
+    parseInt(!isTotal && newCases.replace(",", "")) > 0 ? "yellow" : "";
+  const isRed =
+    parseInt(!isTotal && newDeaths.replace(",", "")) > 0 ? "red" : "";
   divElemToAdd.innerHTML = `
+  <div class="flex-row" role="cell">${idx} </div>
   <div class="flex-row first"  role="cell"><span class="flag-icon flag-icon-ca"></span> ${country}</div>
-  <div class="flex-row" role="cell">${cases} </div>
-  <div class="flex-row" role="cell">${deaths} </div>
-  <div class="flex-row" role="cell">${totalRecoverd} </div>
-  <div class="flex-row" id=${isRed} role="cell">${
-    isRed || isHeader ? "+" + newDeaths : "0"
+  <div id='cases' class="flex-row ${isHeaderSorted}" role="cell" >${cases} </div>
+  <div id='deaths' class="flex-row" role="cell">${deaths} </div>
+  <div id='totalRecoverd' class="flex-row" role="cell">${totalRecoverd} </div>
+  <div id='newDeaths' class="flex-row ${isRed}"  role="cell">${
+    isRed || isHeader || isTotal ? "+" + newDeaths : "0"
   } </div>
-  <div class="flex-row ${isYellow}"  role="cell">${
-    isYellow || isHeader ? "+" + newCases : "0"
+  <div id='newCases' class="flex-row ${isYellow}"  role="cell">${
+    isYellow || isHeader || isTotal ? "+" + newCases : "0"
   } </div>
   `;
-
-  document.querySelector("#aliases").append(divElemToAdd);
+  if (isTotal) {
+    anchor.insertBefore(divElemToAdd, anchor.childNodes[2]);
+  } else {
+    anchor.append(divElemToAdd);
+    if (!isHeader) {
+      //setCountryLoc(country, idx);
+    }
+  }
 }
 
+function sortBy(pred) {
+  if (cache) {
+    clearTable();
+    cache.countries_stat.sort((a, b) => {
+      if (
+        parseInt(a[pred].replace(",", "").replace("+", "")) >=
+        parseInt(b[pred].replace(",", "").replace("+", ""))
+      ) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+  }
+
+  renderData(cache);
+}
+
+function clearSorted() {
+  document.querySelector("#cases").classList.remove("sorted");
+  document.querySelector("#deaths").classList.remove("sorted");
+  document.querySelector("#totalRecoverd").classList.remove("sorted");
+  document.querySelector("#newDeaths").classList.remove("sorted");
+  document.querySelector("#newCases").classList.remove("sorted");
+}
 window.addEventListener("DOMContentLoaded", event => {
   insert2(
+    "",
     "Country",
     "Cases",
     "Deaths",
@@ -72,4 +166,40 @@ window.addEventListener("DOMContentLoaded", event => {
     "New cases",
     true
   );
+});
+
+window.addEventListener("DOMContentLoaded", event => {
+  document.querySelector("#cases").addEventListener("click", () => {
+    clearSorted();
+    sortBy("cases");
+    document.querySelector("#cases").classList.add("sorted");
+  });
+
+  document.querySelector("#deaths").addEventListener("click", () => {
+    clearSorted();
+
+    sortBy("deaths");
+    document.querySelector("#deaths").classList.add("sorted");
+  });
+
+  document.querySelector("#totalRecoverd").addEventListener("click", () => {
+    clearSorted();
+
+    sortBy("total_recovered");
+    document.querySelector("#totalRecoverd").classList.add("sorted");
+  });
+
+  document.querySelector("#newDeaths").addEventListener("click", () => {
+    clearSorted();
+
+    sortBy("new_deaths");
+    document.querySelector("#newDeaths").classList.add("sorted");
+  });
+
+  document.querySelector("#newCases").addEventListener("click", () => {
+    clearSorted();
+
+    sortBy("new_cases");
+    document.querySelector("#newCases").classList.add("sorted");
+  });
 });

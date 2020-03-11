@@ -7,7 +7,7 @@ body {
   min-height: 200px;
 }
 
-#red {
+.red {
   background-color: #ff0000;
   color: white;
 }
@@ -220,10 +220,20 @@ div {
 /* .flex-table.row:nth-child(odd) .flex-row {
   background: #f4f2f1;
 } */
-.flex-table:hover {
+.flex-table:not(#tableHeader):hover {
   background: #6b86ff;
   -webkit-transition: 500ms;
   transition: 500ms;
+}
+.flex-table:not(#tableHeader):hover > div {
+  background: #6b86ff;
+  -webkit-transition: 500ms;
+  transition: 500ms;
+  color: black;
+}
+
+#total {
+  background-color: rgb(181, 217, 238);
 }
 
 .flex-row {
@@ -325,3 +335,7 @@ div {
     width: 100%;
   }
 } */
+
+.sorted {
+  background-color: rgb(20, 31, 56);
+}
