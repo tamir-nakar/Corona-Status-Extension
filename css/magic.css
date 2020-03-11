@@ -1,12 +1,23 @@
 body {
   height: 400px;
-  width: 780px;
+  width: 670px;
   font-family: "Lato", sans-serif;
   font-size: 14px;
   border-radius: 5px;
   min-height: 200px;
 }
 
+#red {
+  background-color: #ff0000;
+  color: white;
+}
+/* #red :hover {
+  background-color: #fff6f6;
+  color: rgb(119, 52, 52);
+} */
+.yellow {
+  background-color: #ffeeaa;
+}
 h1 {
   margin-bottom: 1px;
   padding-left: 0;
@@ -214,6 +225,7 @@ div {
   -webkit-transition: 500ms;
   transition: 500ms;
 }
+
 .flex-row {
   width: 110px;
   text-align: center;

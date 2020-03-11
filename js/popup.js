@@ -18,8 +18,7 @@ const getData = () => {
           e.deaths,
           e.total_recovered,
           e.new_deaths,
-          e.new_cases,
-          e.serious_critical
+          e.new_cases
         )
       )
     );
@@ -36,7 +35,6 @@ function insert2(
   totalRecoverd,
   newDeaths,
   newCases,
-  serious,
   isHeader
 ) {
   const divElemToAdd = document.createElement("div");
@@ -46,14 +44,19 @@ function insert2(
   if (isHeader) {
     divElemToAdd.setAttribute("id", "tableHeader");
   }
+  const isYellow = newCases > 0 ? "yellow" : "";
+  const isRed = newDeaths > 0 ? "red" : "";
   divElemToAdd.innerHTML = `
   <div class="flex-row first"  role="cell"><span class="flag-icon flag-icon-ca"></span> ${country}</div>
   <div class="flex-row" role="cell">${cases} </div>
   <div class="flex-row" role="cell">${deaths} </div>
   <div class="flex-row" role="cell">${totalRecoverd} </div>
-  <div class="flex-row" role="cell">${newDeaths} </div>
-  <div class="flex-row" role="cell">${newCases} </div>
-  <div class="flex-row" role="cell">${serious} </div>
+  <div class="flex-row" id=${isRed} role="cell">${
+    isRed || isHeader ? "+" + newDeaths : "0"
+  } </div>
+  <div class="flex-row ${isYellow}"  role="cell">${
+    isYellow || isHeader ? "+" + newCases : "0"
+  } </div>
   `;
 
   document.querySelector("#aliases").append(divElemToAdd);
@@ -67,7 +70,6 @@ window.addEventListener("DOMContentLoaded", event => {
     "Total recovered",
     "New deaths",
     "New cases",
-    "Serious/critical",
     true
   );
 });
