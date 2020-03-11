@@ -1,29 +1,10 @@
 body {
   height: 400px;
-  width: 730px;
+  width: 780px;
   font-family: "Lato", sans-serif;
   font-size: 14px;
   border-radius: 5px;
   min-height: 200px;
-}
-
-[type="file"] {
-  border: 0;
-  clip: rect(0, 0, 0, 0);
-  height: 1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute !important;
-  white-space: nowrap;
-  width: 1px;
-}
-
-[type="file"] + label {
-  background-color: #000;
-  border-radius: 4rem;
-  color: #fff;
-  display: inline-block;
-  padding-left: 2rem 4rem;
 }
 
 h1 {
@@ -90,14 +71,6 @@ h5 {
   float: left;
 }
 
-.row {
-  clear: both;
-  white-space: nowrap;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-}
-
 #new_alias {
   margin-top: 25px;
   margin-bottom: 15px;
@@ -133,9 +106,10 @@ h5 {
   border-color: #4cae4c;
   color: #fff;
 }
-#header {
-  margin-bottom: 20px;
-}
+/* #header {
+  margin-bottom: 0;
+  padding: 0;
+} */
 .danger {
   background-color: #b94444;
   border-color: #813d3d;
@@ -214,14 +188,22 @@ div {
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
-.flex-table:first-of-type {
+/* .flex-table:first-of-type {
   border-top: solid 1px #1565c0;
   border-left: solid 1px #1565c0;
-}
+} */
 .flex-row:first-of-type .flex-row {
   background: #3b7ec0;
   color: white;
   border-color: #1565c0;
+}
+#tableHeader {
+  background-color: #3b7ec0;
+  color: white;
+  border-color: #1565c0;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
 /* .flex-table.row:nth-child(odd) .flex-row {
@@ -233,7 +215,7 @@ div {
   transition: 500ms;
 }
 .flex-row {
-  width: 90px;
+  width: 110px;
   text-align: center;
   padding: 0.5em 0.5em;
   border-right: solid 1px #d9d9d9;
