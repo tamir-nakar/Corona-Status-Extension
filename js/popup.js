@@ -1,4 +1,5 @@
 let cache = null;
+let filtered = null;
 
 const getDataAsync = async () => {
   let res = await fetch(
@@ -96,10 +97,13 @@ function insert2(
   divElemToAdd.classList.add("row");
   divElemToAdd.classList.add("rowgroup");
   let isHeaderSorted = "";
+  let isSortable = "";
   if (isHeader) {
     divElemToAdd.setAttribute("id", "tableHeader");
     isHeaderSorted = "sorted";
+    isSortable = "sortable";
   }
+
   if (isTotal) {
     divElemToAdd.setAttribute("id", "total");
   }
@@ -110,18 +114,18 @@ function insert2(
   divElemToAdd.innerHTML = `
   <div class="flex-row" role="cell">${idx} </div>
   <div class="flex-row first"  role="cell"><span class="flag-icon flag-icon-ca"></span> ${country}</div>
-  <div id='cases' class="flex-row ${isHeaderSorted}" role="cell" >${cases} </div>
-  <div id='deaths' class="flex-row" role="cell">${deaths} </div>
-  <div id='totalRecoverd' class="flex-row" role="cell">${totalRecoverd} </div>
-  <div id='newDeaths' class="flex-row ${isRed}"  role="cell">${
+  <div id='cases' class="flex-row ${isHeaderSorted} ${isSortable}" role="cell" >${cases} </div>
+  <div id='deaths' class="flex-row ${isSortable}" role="cell">${deaths} </div>
+  <div id='totalRecoverd' class="flex-row ${isSortable}" role="cell">${totalRecoverd} </div>
+  <div id='newDeaths' class="flex-row ${isRed} ${isSortable}"  role="cell">${
     isRed || isHeader || isTotal ? "+" + newDeaths : "0"
   } </div>
-  <div id='newCases' class="flex-row ${isYellow}"  role="cell">${
+  <div id='newCases' class="flex-row ${isYellow} ${isSortable}"  role="cell">${
     isYellow || isHeader || isTotal ? "+" + newCases : "0"
   } </div>
   `;
   if (isTotal) {
-    anchor.insertBefore(divElemToAdd, anchor.childNodes[2]);
+    anchor.insertBefore(divElemToAdd, anchor.childNodes[1]);
   } else {
     anchor.append(divElemToAdd);
     if (!isHeader) {
@@ -131,9 +135,10 @@ function insert2(
 }
 
 function sortBy(pred) {
-  if (cache) {
+  const dataToSort = filtered ? filtered : cache;
+  if (dataToSort) {
     clearTable();
-    cache.countries_stat.sort((a, b) => {
+    dataToSort.countries_stat.sort((a, b) => {
       if (
         parseInt(a[pred].replace(",", "").replace("+", "")) >=
         parseInt(b[pred].replace(",", "").replace("+", ""))
@@ -145,7 +150,20 @@ function sortBy(pred) {
     });
   }
 
-  renderData(cache);
+  renderData(dataToSort);
+}
+
+function filter(str) {
+  clearTable();
+
+  let temp = cache.countries_stat.filter(
+    e =>
+      e.country_name.toLowerCase().substring(0, str.length) ===
+      str.toLowerCase()
+  );
+
+  filtered = {countries_stat: temp};
+  renderData(filtered);
 }
 
 function clearSorted() {
@@ -169,6 +187,9 @@ window.addEventListener("DOMContentLoaded", event => {
 });
 
 window.addEventListener("DOMContentLoaded", event => {
+  document.querySelector("#filter").addEventListener("input", e => {
+    filter(e.target.value);
+  });
   document.querySelector("#cases").addEventListener("click", () => {
     clearSorted();
     sortBy("cases");

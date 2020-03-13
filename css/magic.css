@@ -234,6 +234,7 @@ div {
 
 #total {
   background-color: rgb(181, 217, 238);
+  font-weight: bold;
 }
 
 .flex-row {
@@ -285,57 +286,11 @@ div {
   transition: 500ms;
 }
 
-/* .flex-cell {
-  width: calc(100% / 3);
-  text-align: center;
-  padding: 0.5em 0.5em;
-  border-right: solid 1px #d9d9d9;
-} */
-
-/* @media all and (max-width: 767px) {
-  .flex-row {
-    width: calc(100% / 3);
-  }
-  .flex-row.first {
-    width: 100%;
-  }
-
-  .column {
-    width: 100%;
-  }
-} */
-/* @media all and (max-width: 430px) {
-  .flex-table .flex-row {
-    border-bottom: 0;
-  }
-  .flex-table .flex-row:last-of-type {
-    border-bottom: solid 1px #d9d9d9;
-  }
-
-  .header .flex-row {
-    border-bottom: solid 1px;
-  }
-
-  .flex-row {
-    width: 100%;
-  }
-  .flex-row.first {
-    width: 100%;
-    border-bottom: solid 1px #d9d9d9;
-  }
-
-  .column {
-    width: 100%;
-  }
-  .column .flex-row {
-    border-bottom: solid 1px #d9d9d9;
-  }
-
-  .flex-cell {
-    width: 100%;
-  }
-} */
-
 .sorted {
   background-color: rgb(20, 31, 56);
+}
+
+.sortable:hover {
+  cursor: pointer;
+  background-color: rgb(125, 140, 173);
 }
