@@ -294,3 +294,25 @@ div {
   cursor: pointer;
   background-color: rgb(125, 140, 173);
 }
+
+.footer-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  padding-top: 10px;
+  height: 100px;
+}
+
+.reggg {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  list-style-image: url("/img/chevron-right.png");
+}
