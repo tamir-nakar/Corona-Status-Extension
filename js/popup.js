@@ -12,9 +12,13 @@ const getDataAsync = async () => {
       }
     }
   );
-  res = await res.json();
-  cache = res;
-  return res;
+  if (res.status === 200) {
+    res = await res.json();
+    cache = res;
+    return res;
+  } else {
+    throw new Error("fetch failed");
+  }
 };
 
 function renderData(data) {
@@ -49,21 +53,34 @@ function getCountryLoc(country) {
 }
 
 (async function init() {
-  const data = await getDataAsync();
-  renderData(data);
-  const total = calculateTotal(cache.countries_stat);
-  insert2(
-    "-",
-    total.country_name,
-    total.cases,
-    total.deaths,
-    total.total_recovered,
-    total.new_deaths,
-    total.new_cases,
-    false,
-    true
-  );
-  sortBy("cases");
+  try {
+    const data = await getDataAsync();
+    renderData(data);
+    const total = calculateTotal(cache.countries_stat);
+    insert2(
+      "-",
+      total.country_name,
+      total.cases,
+      total.deaths,
+      total.total_recovered,
+      total.new_deaths,
+      total.new_cases,
+      false,
+      true
+    );
+    sortBy("cases");
+  } catch {
+    const anchor = document.querySelector("#aliases");
+
+    const p = document.createElement("p");
+    p.innerText =
+      "Oops! it seems like we currently have some difficulties providing data. Please try again in a while.";
+    const div = document.createElement("div");
+    div.setAttribute("align", "center");
+    div.appendChild(p);
+
+    anchor.appendChild(div);
+  }
 })();
 
 function calculateTotal(data) {
