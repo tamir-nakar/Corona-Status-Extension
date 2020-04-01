@@ -39,7 +39,7 @@ function clearTable() {
   });
 }
 function setCountryLoc(country, loc) {
-  chrome.storage.sync.set({[country]: loc});
+  chrome.storage.sync.set({ [country]: loc });
 }
 
 function getCountryLoc(country) {
@@ -63,6 +63,7 @@ function getCountryLoc(country) {
     false,
     true
   );
+  sortBy("cases");
 })();
 
 function calculateTotal(data) {
@@ -162,7 +163,7 @@ function filter(str) {
       str.toLowerCase()
   );
 
-  filtered = {countries_stat: temp};
+  filtered = { countries_stat: temp };
   renderData(filtered);
 }
 
