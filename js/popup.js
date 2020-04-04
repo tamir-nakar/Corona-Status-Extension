@@ -38,13 +38,28 @@ function clearTable() {
       e.removeChild(a);
   });
 }
-function setCountryLoc(country, loc) {
-  chrome.storage.sync.set({ [country]: loc });
+async function setCountryLoc(country, loc) {
+  await setKeyToStorageAsync(country, loc);
 }
 
-function getCountryLoc(country) {
-  chrome.storage.sync.get([country], function(result) {
-    return result;
+async function getCountryLoc(country) {
+  const data = await getKeyFromStorageAsync(country);
+  return data;
+}
+
+function getKeyFromStorageAsync(key) {
+  return new Promise((res, rej) => {
+    chrome.storage.sync.get([key], function(result) {
+      res(result[key]);
+    });
+  });
+}
+
+function setKeyToStorageAsync(key, value) {
+  return new Promise((res, rej) => {
+    chrome.storage.sync.set({ [key]: value }, function() {
+      res();
+    });
   });
 }
 
@@ -130,7 +145,7 @@ function insert2(
   } else {
     anchor.append(divElemToAdd);
     if (!isHeader) {
-      //setCountryLoc(country, idx);
+      setTimeout((country, loc) => setCountryLoc(country, loc), 3000);
     }
   }
 }
