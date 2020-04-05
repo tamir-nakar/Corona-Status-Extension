@@ -294,3 +294,10 @@ div {
   cursor: pointer;
   background-color: rgb(125, 140, 173);
 }
+
+.svgWrapper{
+  position:absolute;
+  top:43px;
+  left:485px;
+
+}

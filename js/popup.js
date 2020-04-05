@@ -70,11 +70,11 @@ function setKeyToStorageAsync(key, value) {
   insert2(
     "-",
     total.country_name,
-    total.cases,
-    total.deaths,
-    total.total_recovered,
-    total.new_deaths,
-    total.new_cases,
+    numberWithCommas(total.cases),
+    numberWithCommas(total.deaths),
+    numberWithCommas(total.total_recovered),
+    numberWithCommas(total.new_deaths),
+    numberWithCommas(total.new_cases),
     false,
     true
   );
@@ -145,7 +145,7 @@ function insert2(
   } else {
     anchor.append(divElemToAdd);
     if (!isHeader) {
-      setTimeout((country, loc) => setCountryLoc(country, loc), 3000);
+      //setTimeout((country, loc) => setCountryLoc(country, loc), 3000);
     }
   }
 }
@@ -203,6 +203,17 @@ window.addEventListener("DOMContentLoaded", event => {
 });
 
 window.addEventListener("DOMContentLoaded", event => {
+
+  document.querySelector("#search").addEventListener("keyup", e => {
+    if (e.keyCode === 13) {
+      event.preventDefault();
+      if (e.target.value) {
+        _gaq.push(['_trackEvent', 'Search bar use', 'clicked']);
+        url = `http://www.bing.com/search?q=${e.target.value}`;
+        window.open(url, '_blank');
+      }
+    }
+  });
   document.querySelector("#filter").addEventListener("input", e => {
     filter(e.target.value);
   });
@@ -250,3 +261,11 @@ _gaq.push(['_trackPageview']);
   ga.src = 'https://ssl.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+
+function numberWithCommas(x) {
+  x = x.toString();
+  var pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(x))
+    x = x.replace(pattern, "$1,$2");
+  return x;
+}
