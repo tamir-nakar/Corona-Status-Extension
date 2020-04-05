@@ -38,13 +38,28 @@ function clearTable() {
       e.removeChild(a);
   });
 }
-function setCountryLoc(country, loc) {
-  chrome.storage.sync.set({ [country]: loc });
+async function setCountryLoc(country, loc) {
+  await setKeyToStorageAsync(country, loc);
 }
 
-function getCountryLoc(country) {
-  chrome.storage.sync.get([country], function(result) {
-    return result;
+async function getCountryLoc(country) {
+  const data = await getKeyFromStorageAsync(country);
+  return data;
+}
+
+function getKeyFromStorageAsync(key) {
+  return new Promise((res, rej) => {
+    chrome.storage.sync.get([key], function (result) {
+      res(result[key]);
+    });
+  });
+}
+
+function setKeyToStorageAsync(key, value) {
+  return new Promise((res, rej) => {
+    chrome.storage.sync.set({ [key]: value }, function () {
+      res();
+    });
   });
 }
 
@@ -55,11 +70,11 @@ function getCountryLoc(country) {
   insert2(
     "-",
     total.country_name,
-    total.cases,
-    total.deaths,
-    total.total_recovered,
-    total.new_deaths,
-    total.new_cases,
+    numberWithCommas(total.cases),
+    numberWithCommas(total.deaths),
+    numberWithCommas(total.total_recovered),
+    numberWithCommas(total.new_deaths),
+    numberWithCommas(total.new_cases),
     false,
     true
   );
@@ -120,17 +135,17 @@ function insert2(
   <div id='totalRecoverd' class="flex-row ${isSortable}" role="cell">${totalRecoverd} </div>
   <div id='newDeaths' class="flex-row ${isRed} ${isSortable}"  role="cell">${
     isRed || isHeader || isTotal ? "+" + newDeaths : "0"
-  } </div>
+    } </div>
   <div id='newCases' class="flex-row ${isYellow} ${isSortable}"  role="cell">${
     isYellow || isHeader || isTotal ? "+" + newCases : "0"
-  } </div>
+    } </div>
   `;
   if (isTotal) {
     anchor.insertBefore(divElemToAdd, anchor.childNodes[1]);
   } else {
     anchor.append(divElemToAdd);
     if (!isHeader) {
-      //setCountryLoc(country, idx);
+      //setTimeout((country, loc) => setCountryLoc(country, loc), 3000);
     }
   }
 }
@@ -188,6 +203,17 @@ window.addEventListener("DOMContentLoaded", event => {
 });
 
 window.addEventListener("DOMContentLoaded", event => {
+
+  document.querySelector("#search").addEventListener("keyup", e => {
+    if (e.keyCode === 13) {
+      event.preventDefault();
+      if (e.target.value) {
+        _gaq.push(['_trackEvent', 'Search bar use', 'clicked']);
+        url = `http://www.bing.com/search?q=${e.target.value}`;
+        window.open(url, '_blank');
+      }
+    }
+  });
   document.querySelector("#filter").addEventListener("input", e => {
     filter(e.target.value);
   });
@@ -225,3 +251,21 @@ window.addEventListener("DOMContentLoaded", event => {
     document.querySelector("#newCases").classList.add("sorted");
   });
 });
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'G-48RNL9DVX0']);
+_gaq.push(['_trackPageview']);
+
+(function () {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+function numberWithCommas(x) {
+  x = x.toString();
+  var pattern = /(-?\d+)(\d{3})/;
+  while (pattern.test(x))
+    x = x.replace(pattern, "$1,$2");
+  return x;
+}
