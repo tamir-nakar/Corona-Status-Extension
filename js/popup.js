@@ -49,7 +49,7 @@ async function getCountryLoc(country) {
 
 function getKeyFromStorageAsync(key) {
   return new Promise((res, rej) => {
-    chrome.storage.sync.get([key], function(result) {
+    chrome.storage.sync.get([key], function (result) {
       res(result[key]);
     });
   });
@@ -57,7 +57,7 @@ function getKeyFromStorageAsync(key) {
 
 function setKeyToStorageAsync(key, value) {
   return new Promise((res, rej) => {
-    chrome.storage.sync.set({ [key]: value }, function() {
+    chrome.storage.sync.set({ [key]: value }, function () {
       res();
     });
   });
@@ -135,10 +135,10 @@ function insert2(
   <div id='totalRecoverd' class="flex-row ${isSortable}" role="cell">${totalRecoverd} </div>
   <div id='newDeaths' class="flex-row ${isRed} ${isSortable}"  role="cell">${
     isRed || isHeader || isTotal ? "+" + newDeaths : "0"
-  } </div>
+    } </div>
   <div id='newCases' class="flex-row ${isYellow} ${isSortable}"  role="cell">${
     isYellow || isHeader || isTotal ? "+" + newCases : "0"
-  } </div>
+    } </div>
   `;
   if (isTotal) {
     anchor.insertBefore(divElemToAdd, anchor.childNodes[1]);
@@ -240,3 +240,13 @@ window.addEventListener("DOMContentLoaded", event => {
     document.querySelector("#newCases").classList.add("sorted");
   });
 });
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'G-48RNL9DVX0']);
+_gaq.push(['_trackPageview']);
+
+(function () {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
