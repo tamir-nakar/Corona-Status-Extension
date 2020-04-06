@@ -1,21 +1,4 @@
-let cache = null;
 let filtered = null;
-
-const getDataAsync = async () => {
-  let res = await fetch(
-    "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php",
-    {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "95ecef83a2msh6f7dbf0fc606d0cp10442ejsn10e2bcd7d744"
-      }
-    }
-  );
-  res = await res.json();
-  cache = res;
-  return res;
-};
 
 function renderData(data) {
   data.countries_stat.forEach((e, idx) =>
@@ -64,9 +47,11 @@ function setKeyToStorageAsync(key, value) {
 }
 
 (async function init() {
-  const data = await getDataAsync();
+  //const data = await getDataAsync();
+  const data = await sendMessageAsync('provide_data');
+  console.log(data);
   renderData(data);
-  const total = calculateTotal(cache.countries_stat);
+  const total = calculateTotal(data.countries_stat);
   insert2(
     "-",
     total.country_name,
@@ -151,35 +136,48 @@ function insert2(
 }
 
 function sortBy(pred) {
-  const dataToSort = filtered ? filtered : cache;
-  if (dataToSort) {
-    clearTable();
-    dataToSort.countries_stat.sort((a, b) => {
-      if (
-        parseInt(a[pred].replace(",", "").replace("+", "")) >=
-        parseInt(b[pred].replace(",", "").replace("+", ""))
-      ) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-  }
+  sendMessageAsync('provide_data').then(
 
-  renderData(dataToSort);
+    data => {
+
+      const dataToSort = filtered ? filtered : data;
+      if (dataToSort) {
+        clearTable();
+        dataToSort.countries_stat.sort((a, b) => {
+          if (
+            parseInt(a[pred].replace(",", "").replace("+", "")) >=
+            parseInt(b[pred].replace(",", "").replace("+", ""))
+          ) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
+      }
+
+      renderData(dataToSort);
+    }
+  );
+
+
 }
 
 function filter(str) {
   clearTable();
 
-  let temp = cache.countries_stat.filter(
-    e =>
-      e.country_name.toLowerCase().substring(0, str.length) ===
-      str.toLowerCase()
-  );
+  sendMessageAsync('provide_data').then(
+    data => {
+      let temp = data.countries_stat.filter(
+        e =>
+          e.country_name.toLowerCase().substring(0, str.length) ===
+          str.toLowerCase()
+      );
 
-  filtered = { countries_stat: temp };
-  renderData(filtered);
+      filtered = { countries_stat: temp };
+      renderData(filtered);
+    }
+  )
+
 }
 
 function clearSorted() {
@@ -269,3 +267,17 @@ function numberWithCommas(x) {
     x = x.replace(pattern, "$1,$2");
   return x;
 }
+
+
+
+
+function sendMessageAsync(type) {
+
+  return new Promise((res, rej) => {
+    chrome.runtime.sendMessage({ type }, response => {
+
+      res(response);
+    })
+  })
+}
+
