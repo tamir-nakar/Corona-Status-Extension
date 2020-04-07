@@ -208,9 +208,9 @@ window.addEventListener("DOMContentLoaded", event => {
     if (e.keyCode === 13) {
       event.preventDefault();
       if (e.target.value) {
-        _gaq.push(['_trackEvent', 'Search bar use', 'clicked']);
+        _gaq.push(['_trackEvent', 'Search bar use', e.target.value]);
         url = `http://www.bing.com/search?q=${e.target.value}`;
-        window.open(url, '_blank');
+        setTimeout(() => window.open(url, '_blank'), 500);
       }
     }
   });
