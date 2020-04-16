@@ -295,6 +295,7 @@ div {
   background-color: rgb(125, 140, 173);
 }
 
+
 .footer-row {
   display: flex;
   flex-direction: row;
@@ -316,3 +317,11 @@ div {
   list-style-image: url("/img/chevron-right.png");
   text-align: left;
 }
+
+.svgWrapper{
+  position:absolute;
+  top:43px;
+  left:485px;
+
+}
+
