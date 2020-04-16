@@ -91,11 +91,11 @@ function setKeyToStorageAsync(key, value) {
     insert2(
       "-",
       total.country_name,
-    numberWithCommas(total.cases),
-    numberWithCommas(total.deaths),
-    numberWithCommas(total.total_recovered),
-    numberWithCommas(total.new_deaths),
-    numberWithCommas(total.new_cases),
+      numberWithCommas(total.cases),
+      numberWithCommas(total.deaths),
+      numberWithCommas(total.total_recovered),
+      numberWithCommas(total.new_deaths),
+      numberWithCommas(total.new_cases),
       false,
       true
     );
@@ -256,16 +256,7 @@ window.addEventListener("DOMContentLoaded", event => {
 
 window.addEventListener("DOMContentLoaded", event => {
 
-  document.querySelector("#search").addEventListener("keyup", e => {
-    if (e.keyCode === 13) {
-      event.preventDefault();
-      if (e.target.value) {
-        _gaq.push(['_trackEvent', 'Search bar use', e.target.value]);
-        url = `http://www.bing.com/search?q=${e.target.value}`;
-        setTimeout(() => window.open(url, '_blank'), 500);
-      }
-    }
-  });
+
   document.querySelector("#filter").addEventListener("input", e => {
     filter(e.target.value);
   });

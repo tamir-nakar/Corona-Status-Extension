@@ -1,82 +1,65 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Coronavirus Status</title>
-    <script src="js/popup.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/lato.css" />
-    <link href="css/magic.css" rel="stylesheet" />
-  </head>
-  <body>
-    <div style="display:flex;flex-direction: row;">
-      <h1>Coronavirus Status</h1>
-      <img src="/img/48x48.png" />
-      <h5>v2.1.0</h5>
-      <div style="margin-top: 20px; margin-left:90px;">
-        <span><b>filter countries: </b></span
-        ><input
-          type="text"
-          name="fname"
-          id="filter"
-          style="margin-top:10px;width:140px"
-        />
-      </div>
-    </div>
-    <hr />
 
-    <div id="aliases"></div>
+<head>
+  <title>Coronavirus Status</title>
+  <script src="js/popup.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/lato.css" />
+  <link href="css/magic.css" rel="stylesheet" />
+</head>
 
-    <div id="news" align="center" style="margin-top:15px">
-      <hr />
-      <u>Latest Coronavirus News:</u>
-      <!-- start 2 columened section-->
-
-      <div class="footer-row" id="effective">
-        <div class="footer-column">
-          <div class="footer-left-column">
-            <ul>
-              <li class="reggg">
-                <a target="_blank" href="#" id="np1"></a>
-              </li>
-              <li class="reggg">
-                <a target="_blank" href="#" id="np2"></a>
-              </li>
-              <li class="reggg">
-                <a target="_blank" href="#" id="np3"></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-column">
-          <div class="footer-right-column">
-            <ul>
-              <li class="reggg">
-                <a target="_blank" href="#" id="np4"> </a>
-              </li>
-              <li class="reggg">
-                <a target="_blank" href="#" id="np5"></a>
-              </li>
-              <li class="reggg">
-                <a target="_blank" href="#" id="np6"> </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- end 2 columened section-->
-
+<body>
+  <div style="display:flex;flex-direction: row;">
+    <h1>Coronavirus Status</h1>
+    <img src="/img/48x48.png" />
+    <h5>v2.1.0</h5>
+    <div style="margin-top: 20px; margin-left:90px;">
+      <span><b>filter countries: </b></span><input type="text" name="fname" id="filter"
+        style="margin-top:10px;width:140px" />
     </div>
   </div>
   <hr />
 
   <div id="aliases"></div>
-  <div>
-    <span></span><input type="text" name="fname" id="filter" placeholder="Filter countries"
-      style="margin-top:10px;width:140px" />
-  </div>
-  <div align="left" style="margin-top:15px">
-    <a target="_blank"
-      href="https://chrome.google.com/webstore/detail/shortcut-manager-deluxe/jmiadifgifojmldfpbcllhljdogkapmk">Also
-      try: Shortcut Manager Deluxe</a>
+
+  <div id="news" align="center" style="margin-top:15px">
+    <hr />
+    <u>Latest Coronavirus News:</u>
+    <!-- start 2 columened section-->
+
+    <div class="footer-row" id="effective">
+      <div class="footer-column">
+        <div class="footer-left-column">
+          <ul>
+            <li class="reggg">
+              <a target="_blank" href="#" id="np1"></a>
+            </li>
+            <li class="reggg">
+              <a target="_blank" href="#" id="np2"></a>
+            </li>
+            <li class="reggg">
+              <a target="_blank" href="#" id="np3"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-column">
+        <div class="footer-right-column">
+          <ul>
+            <li class="reggg">
+              <a target="_blank" href="#" id="np4"> </a>
+            </li>
+            <li class="reggg">
+              <a target="_blank" href="#" id="np5"></a>
+            </li>
+            <li class="reggg">
+              <a target="_blank" href="#" id="np6"> </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- end 2 columened section-->
   </div>
 </body>
 
