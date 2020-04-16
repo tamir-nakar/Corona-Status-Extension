@@ -21,20 +21,6 @@ const getDataAsync = async () => {
   }
 };
 
-const getNewsAsync = async () => {
-  let res = await fetch(
-    "https://api.msn.com/MSN/Feed?ocid=CodeFuel&market=en-us&query=coronavirus&$top=100&$skip=0&$select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=tvUxRvsm7hOZ1qqr9Bdqd5COiPNGJn4eEtVquhjCrO",
-    {
-      method: "GET"
-    }
-  );
-  if (res.status === 200) {
-    res = await res.json();
-    return res;
-  } else {
-    throw new Error("fetch failed");
-  }
-};
 
 function renderData(data) {
   data.countries_stat.forEach((e, idx) =>
@@ -113,29 +99,13 @@ function setKeyToStorageAsync(key, value) {
     anchor.appendChild(div);
   }
 
-  try {
-    const news = await getNewsAsync();
-    renderNews(news, 6);
-  } catch {
-    document.querySelector("#effective").innerHTML =
-      "<p>Oops! it seems like we currently have some difficulties providing news. Please try again in a while.</p>";
-  }
 
 })();
 
-function renderNews(newsObj, num) {
-  const newsArr = newsObj.value[0].subCards;
-  newsArr.forEach((item, idx) => {
-    if (idx < num) {
-      a = document.querySelector(`#np${idx + 1}`);
-      a.innerText = item.title;
-      a.href = item.url;
-    }
-  });
-}
+
 function calculateTotal(data) {
   const sum = cat =>
-    data.reduce((acc, curr) => acc + parseInt(curr[cat].replace(",", "")), 0);
+    data.reduce((acc, curr) => acc + parseInt(curr[cat].replace(",", "")) || 0, 0);
   return {
     country_name: "TOTAL",
     cases: sum("cases"),
@@ -184,7 +154,7 @@ function insert2(
   <div class="flex-row first"  role="cell"><span class="flag-icon flag-icon-ca"></span> ${country}</div>
   <div id='cases' class="flex-row ${isHeaderSorted} ${isSortable}" role="cell" >${cases} </div>
   <div id='deaths' class="flex-row ${isSortable}" role="cell">${deaths} </div>
-  <div id='totalRecoverd' class="flex-row ${isSortable}" role="cell">${totalRecoverd} </div>
+  <div id='totalRecoverd' class="flex-row ${isSortable}" role="cell">${totalRecoverd === 'N/A' ? 0 : totalRecoverd} </div>
   <div id='newDeaths' class="flex-row ${isRed} ${isSortable}"  role="cell">${
     isRed || isHeader || isTotal ? "+" + newDeaths : "0"
     } </div>
