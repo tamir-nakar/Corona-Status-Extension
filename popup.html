@@ -1,32 +1,69 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Coronavirus Status</title>
+    <script src="js/popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/lato.css" />
+    <link href="css/magic.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div style="display:flex;flex-direction: row;">
+      <h1>Coronavirus Status</h1>
+      <img src="/img/48x48.png" />
+      <h5>v2.1.0</h5>
+      <div style="margin-top: 20px; margin-left:90px;">
+        <span><b>filter countries: </b></span
+        ><input
+          type="text"
+          name="fname"
+          id="filter"
+          style="margin-top:10px;width:140px"
+        />
+      </div>
+    </div>
+    <hr />
 
-<head>
-  <title>Coronavirus Status</title>
-  <script src="js/popup.js"></script>
+    <div id="aliases"></div>
 
-  <link rel="stylesheet" type="text/css" href="css/lato.css" />
-  <link href="css/magic.css" rel="stylesheet" />
-</head>
+    <div id="news" align="center" style="margin-top:15px">
+      <hr />
+      <u>Latest Coronavirus News:</u>
+      <!-- start 2 columened section-->
 
-<body>
-  <div style="display:flex;flex-direction: row;">
-    <h1>Coronavirus Status</h1>
-    <img src="/img/48x48.png" />
-    <h5>v2.2.4</h5>
-    <div class="search" id="search" style="margin-top: 20px; margin-left:145px;">
-      <div class="svgWrapper"> <svg class="bi bi-search" width="1em" height="1em" viewBox="0 0 16 16"
-          fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M10.442 10.442a1 1 0 011.415 0l3.85 3.85a1 1 0 01-1.414 1.415l-3.85-3.85a1 1 0 010-1.415z"
-            clip-rule="evenodd" />
-          <path fill-rule="evenodd"
-            d="M6.5 12a5.5 5.5 0 100-11 5.5 5.5 0 000 11zM13 6.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
-            clip-rule="evenodd" />
-        </svg></div>
+      <div class="footer-row" id="effective">
+        <div class="footer-column">
+          <div class="footer-left-column">
+            <ul>
+              <li class="reggg">
+                <a target="_blank" href="#" id="np1"></a>
+              </li>
+              <li class="reggg">
+                <a target="_blank" href="#" id="np2"></a>
+              </li>
+              <li class="reggg">
+                <a target="_blank" href="#" id="np3"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-column">
+          <div class="footer-right-column">
+            <ul>
+              <li class="reggg">
+                <a target="_blank" href="#" id="np4"> </a>
+              </li>
+              <li class="reggg">
+                <a target="_blank" href="#" id="np5"></a>
+              </li>
+              <li class="reggg">
+                <a target="_blank" href="#" id="np6"> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- end 2 columened section-->
 
-      <input type="search" placeholder="Search the web" results="0"
-        style="text-indent:22px;margin-top:10px;width:200px" />
     </div>
   </div>
   <hr />

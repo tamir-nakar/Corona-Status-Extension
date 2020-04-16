@@ -12,9 +12,28 @@ const getDataAsync = async () => {
       }
     }
   );
-  res = await res.json();
-  cache = res;
-  return res;
+  if (res.status === 200) {
+    res = await res.json();
+    cache = res;
+    return res;
+  } else {
+    throw new Error("fetch failed");
+  }
+};
+
+const getNewsAsync = async () => {
+  let res = await fetch(
+    "https://api.msn.com/MSN/Feed?ocid=CodeFuel&market=en-us&query=coronavirus&$top=100&$skip=0&$select=sourceid,type,url,provider,title,images,publishedDateTime,categories&apikey=tvUxRvsm7hOZ1qqr9Bdqd5COiPNGJn4eEtVquhjCrO",
+    {
+      method: "GET"
+    }
+  );
+  if (res.status === 200) {
+    res = await res.json();
+    return res;
+  } else {
+    throw new Error("fetch failed");
+  }
 };
 
 function renderData(data) {
@@ -64,23 +83,56 @@ function setKeyToStorageAsync(key, value) {
 }
 
 (async function init() {
-  const data = await getDataAsync();
-  renderData(data);
-  const total = calculateTotal(cache.countries_stat);
-  insert2(
-    "-",
-    total.country_name,
+
+  try {
+    const data = await getDataAsync();
+    renderData(data);
+    const total = calculateTotal(cache.countries_stat);
+    insert2(
+      "-",
+      total.country_name,
     numberWithCommas(total.cases),
     numberWithCommas(total.deaths),
     numberWithCommas(total.total_recovered),
     numberWithCommas(total.new_deaths),
     numberWithCommas(total.new_cases),
-    false,
-    true
-  );
-  sortBy("cases");
+      false,
+      true
+    );
+    sortBy("cases");
+  } catch {
+    const anchor = document.querySelector("#aliases");
+
+    const p = document.createElement("p");
+    p.innerText =
+      "Oops! it seems like we currently have some difficulties providing data. Please try again in a while.";
+    const div = document.createElement("div");
+    div.setAttribute("align", "center");
+    div.appendChild(p);
+
+    anchor.appendChild(div);
+  }
+
+  try {
+    const news = await getNewsAsync();
+    renderNews(news, 6);
+  } catch {
+    document.querySelector("#effective").innerHTML =
+      "<p>Oops! it seems like we currently have some difficulties providing news. Please try again in a while.</p>";
+  }
+
 })();
 
+function renderNews(newsObj, num) {
+  const newsArr = newsObj.value[0].subCards;
+  newsArr.forEach((item, idx) => {
+    if (idx < num) {
+      a = document.querySelector(`#np${idx + 1}`);
+      a.innerText = item.title;
+      a.href = item.url;
+    }
+  });
+}
 function calculateTotal(data) {
   const sum = cat =>
     data.reduce((acc, curr) => acc + parseInt(curr[cat].replace(",", "")), 0);
