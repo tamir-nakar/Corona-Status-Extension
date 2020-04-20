@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Coronavirus Status</title>
+    <script src="js/popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/lato.css" />
+    <link href="css/magic.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/spinner.css" />
+  </head>
 
-<head>
-  <title>Coronavirus Status</title>
-  <script src="js/popup.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/lato.css" />
-  <link href="css/magic.css" rel="stylesheet" />
-</head>
-
-<body>
-  <div style="display:flex;flex-direction: row;">
-    <h1>Coronavirus Status</h1>
-    <img src="/img/48x48.png" />
-    <h5>v2.1.0</h5>
-    <div style="margin-top: 20px; margin-left:90px;">
-      <span><b>filter countries: </b></span><input type="text" name="fname" id="filter"
-        style="margin-top:10px;width:140px" />
+  <body>
+    <div style="display: flex; flex-direction: row;">
+      <h1>Coronavirus Status</h1>
+      <img src="/img/48x48.png" />
+      <h5>v2.1.0</h5>
+      <div style="margin-top: 20px; margin-left: 90px;">
+        <span><b>filter countries: </b></span
+        ><input
+          type="text"
+          name="fname"
+          id="filter"
+          style="margin-top: 10px; width: 140px;"
+        />
+      </div>
     </div>
-  </div>
-  <hr />
-
-  <div id="aliases"></div>
-
-  <div id="news" align="center" style="margin-top:15px">
     <hr />
-    <u>Coronavirus-status special offers:</u><br><br>
-    <!-- start 2 columened section-->
 
-    <!-- <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"
+    <div id="aliases">
+      <div class="lds-hourglass" style="display: block;"></div>
+      <div class="note" style="display: block;">
+        <b>Important note</b>: In the last days, the service has been slowed
+        down. (up to 10 seconds per loading)<br />
+        We're aware to this problem and doing our best to fix it and serve data
+        quickly. <br />We're Sorry for the inconvenience.
+      </div>
+    </div>
+
+    <div id="news" align="center" style="margin-top: 15px;">
+      <hr />
+      <u>Coronavirus-status special offers:</u><br />
+      <!-- start 2 columened section-->
+
+      <!-- <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"
       src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=thecart0b-20&marketplace=amazon&region=US&placement=B086V77CQH&asins=B086V77CQH&linkId=e98fcd1b799df84d85234b17e8acfb2f&show_border=false&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff">
     </iframe>
     <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"
@@ -42,36 +55,124 @@
     <iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0"
       src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=US&source=ac&ref=tf_til&ad_type=product_link&tracking_id=thecart0b-20&marketplace=amazon&region=US&placement=B071CV8CG2&asins=B071CV8CG2&linkId=14281074503861942b301cd84cb15260&show_border=false&link_opens_in_new_window=true&price_color=333333&title_color=0066c0&bg_color=ffffff">
     </iframe> -->
-    <div class="footer-row" id="effective">
-      <div class="footer-column">
-        <div class="footer-left-column">
-          <ul>
-            <li class="reggg">
-              <a target="_blank" id="np" loc ="1" href="https://www.amazon.com/gp/offer-listing/B086V77CQH/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B086V77CQH&linkCode=am2&tag=thecart0b-20&linkId=8e7533813a83e2338bbc4ec499d1953f">How to Profit from the Coronavirus Recession: 50 Actionable Investment Ideas</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B086V77CQH" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-            </li>
-            <li class="reggg">
-              <a target="_blank" id="np" loc ="2"href="https://www.amazon.com/gp/offer-listing/B086DJZMHJ/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B086DJZMHJ&linkCode=am2&tag=thecart0b-20&linkId=2e65c19a44b6c604f33682ed7ad6877b">Luntus 100Pcs/Lot 5 Layers PM2.5 Activated Carbon Filter Insert Protective Filter Media Insert for Mouth Anti Dust</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B086DJZMHJ" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
-            </li>
-            <li class="reggg">
-              <a target="_blank" id="np" loc ="3"href="https://www.amazon.com/gp/offer-listing/B0868MZ8QT/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0868MZ8QT&linkCode=am2&tag=thecart0b-20&linkId=2395f35f83c634be34461d3665e7d9f4">20 Pieces Hygiene and Protection Against Surgical Dust Waterproof Cover, High Filtration and Ventilation Security</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B0868MZ8QT" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />            </li>
-          </ul>
+      <div class="footer-row" id="effective">
+        <div class="footer-column">
+          <div class="footer-left-column">
+            <ul>
+              <li class="reggg">
+                <a
+                  target="_blank"
+                  id="np"
+                  loc="1"
+                  href="https://www.amazon.com/gp/offer-listing/B086V77CQH/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B086V77CQH&linkCode=am2&tag=thecart0b-20&linkId=8e7533813a83e2338bbc4ec499d1953f"
+                  >How to Profit from the Coronavirus Recession: 50 Actionable
+                  Investment Ideas</a
+                ><img
+                  src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B086V77CQH"
+                  width="1"
+                  height="1"
+                  border="0"
+                  alt=""
+                  style="border: none !important; margin: 0px !important;"
+                />
+              </li>
+              <li class="reggg">
+                <a
+                  target="_blank"
+                  id="np"
+                  loc="2"
+                  href="https://www.amazon.com/gp/offer-listing/B086DJZMHJ/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B086DJZMHJ&linkCode=am2&tag=thecart0b-20&linkId=2e65c19a44b6c604f33682ed7ad6877b"
+                  >Luntus 100Pcs/Lot 5 Layers PM2.5 Activated Carbon Filter
+                  Insert Protective Filter Media Insert for Mouth Anti Dust</a
+                ><img
+                  src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B086DJZMHJ"
+                  width="1"
+                  height="1"
+                  border="0"
+                  alt=""
+                  style="border: none !important; margin: 0px !important;"
+                />
+              </li>
+              <li class="reggg">
+                <a
+                  target="_blank"
+                  id="np"
+                  loc="3"
+                  href="https://www.amazon.com/gp/offer-listing/B0868MZ8QT/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0868MZ8QT&linkCode=am2&tag=thecart0b-20&linkId=2395f35f83c634be34461d3665e7d9f4"
+                  >20 Pieces Hygiene and Protection Against Surgical Dust
+                  Waterproof Cover, High Filtration and Ventilation Security</a
+                ><img
+                  src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B0868MZ8QT"
+                  width="1"
+                  height="1"
+                  border="0"
+                  alt=""
+                  style="border: none !important; margin: 0px !important;"
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-column">
+          <div class="footer-right-column">
+            <ul>
+              <li class="reggg">
+                <a
+                  target="_blank"
+                  id="np"
+                  loc="4"
+                  href="https://www.amazon.com/gp/offer-listing/B07YLDNTKB/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07YLDNTKB&linkCode=am2&tag=thecart0b-20&linkId=2d6cc225b6a8a827cfefcb594816b418"
+                  >PlayStation 4 Slim 1TB Console - Only On PlayStation
+                  Bundle</a
+                ><img
+                  src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B07YLDNTKB"
+                  width="1"
+                  height="1"
+                  border="0"
+                  alt=""
+                  style="border: none !important; margin: 0px !important;"
+                />
+              </li>
+              <li class="reggg">
+                <a
+                  target="_blank"
+                  id="np"
+                  loc="5"
+                  href="https://www.amazon.com/gp/offer-listing/B072392YGD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B072392YGD&linkCode=am2&tag=thecart0b-20&linkId=5602d38abab575bc4c61cb0106116732"
+                  >Doctor Developed Premium Copper Lined Wrist Support/Wrist
+                  Strap/Wrist Brace/Hand Support [Single]&amp; Doctor Written
+                  Handbook— Suitable for Both Right and Left Hands</a
+                ><img
+                  src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B072392YGD"
+                  width="1"
+                  height="1"
+                  border="0"
+                  alt=""
+                  style="border: none !important; margin: 0px !important;"
+                />
+              </li>
+              <li class="reggg">
+                <a
+                  target="_blank"
+                  id="np"
+                  loc="6"
+                  href="https://www.amazon.com/gp/offer-listing/B002YRB35I/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B002YRB35I&linkCode=am2&tag=thecart0b-20&linkId=85f152c07ac4e7413c892fc77a734ab4"
+                  >TRX ALL-IN-ONE Suspension Training: Bodyweight Resistance
+                  System | Full Body Workouts for Home, Travel</a
+                ><img
+                  src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B002YRB35I"
+                  width="1"
+                  height="1"
+                  border="0"
+                  alt=""
+                  style="border: none !important; margin: 0px !important;"
+                />
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="footer-column">
-        <div class="footer-right-column">
-          <ul>
-            <li class="reggg">
-              <a target="_blank" id="np" loc ="4"href="https://www.amazon.com/gp/offer-listing/B07YLDNTKB/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B07YLDNTKB&linkCode=am2&tag=thecart0b-20&linkId=2d6cc225b6a8a827cfefcb594816b418">PlayStation 4 Slim 1TB Console - Only On PlayStation Bundle</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B07YLDNTKB" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />            </li>
-            <li class="reggg">
-              <a target="_blank"id="np" loc ="5" href="https://www.amazon.com/gp/offer-listing/B072392YGD/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B072392YGD&linkCode=am2&tag=thecart0b-20&linkId=5602d38abab575bc4c61cb0106116732">Doctor Developed Premium Copper Lined Wrist Support/Wrist Strap/Wrist Brace/Hand Support [Single]&amp; Doctor Written Handbook— Suitable for Both Right and Left Hands</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B072392YGD" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />            </li>
-            <li class="reggg">
-              <a target="_blank" id="np" loc ="6"href="https://www.amazon.com/gp/offer-listing/B002YRB35I/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B002YRB35I&linkCode=am2&tag=thecart0b-20&linkId=85f152c07ac4e7413c892fc77a734ab4">TRX ALL-IN-ONE Suspension Training: Bodyweight Resistance System | Full Body Workouts for Home, Travel</a><img src="//ir-na.amazon-adsystem.com/e/ir?t=thecart0b-20&l=am2&o=1&a=B002YRB35I" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />            </li>
-          </ul>
-        </div>
-      </div>
+      <!-- end 2 columened section-->
     </div>
-    <!-- end 2 columened section-->
-  </div>
-</body>
-
+  </body>
 </html>
