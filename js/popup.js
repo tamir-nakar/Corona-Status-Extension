@@ -1,19 +1,18 @@
 let cache = null;
 let filtered = null;
+let total = null;
 
 const getDataAsync = async () => {
-  let res = await fetch(
-    "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php",
-    {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "95ecef83a2msh6f7dbf0fc606d0cp10442ejsn10e2bcd7d744",
-      },
-    }
-  );
+  let res = await fetch("https://covid-193.p.rapidapi.com/statistics", {
+    method: "GET",
+    headers: {
+      "x-rapidapi-host": "covid-193.p.rapidapi.com",
+      "x-rapidapi-key": "0dcf6e87d0mshc0fcc8690b20ea7p1b67a1jsna4857443de15",
+    },
+  });
   if (res.status === 200) {
     res = await res.json();
+    res = adjustData(res);
     cache = res;
     return res;
   } else {
@@ -21,6 +20,47 @@ const getDataAsync = async () => {
   }
 };
 
+function adjustData(original) {
+  const res = {countries_stat: []};
+  original.response.forEach((e) => {
+    const continets = [
+      "Europe",
+      "North-America",
+      "South-America",
+      "Asia",
+      "Africa",
+    ];
+
+    if (!continets.includes(e.country)) {
+      const newDeaths = e.deaths.new
+        ? numberWithCommas(`+${e.deaths.new.substr(1)}`)
+        : 0;
+      const newCases = e.cases.new
+        ? numberWithCommas(`+${e.cases.new.substr(1)}`)
+        : 0;
+      if (e.country !== "All") {
+        res.countries_stat.push({
+          country_name: e.country,
+          cases: numberWithCommas(e.cases.total),
+          deaths: numberWithCommas(e.deaths.total),
+          total_recovered: numberWithCommas(e.cases.recovered),
+          new_deaths: newDeaths,
+          new_cases: newCases,
+        });
+      } else {
+        total = {
+          country_name: e.country,
+          cases: numberWithCommas(e.cases.total),
+          deaths: numberWithCommas(e.deaths.total),
+          total_recovered: numberWithCommas(e.cases.recovered),
+          new_deaths: newDeaths,
+          new_cases: newCases,
+        };
+      }
+    }
+  });
+  return res;
+}
 function renderData(data) {
   data.countries_stat.forEach((e, idx) =>
     insert2(
@@ -74,7 +114,8 @@ function setKeyToStorageAsync(key, value) {
     renderData(data);
 
     sortBy("cases");
-  } catch {
+  } catch (e) {
+    console.log(e);
     const anchor = document.querySelector("#aliases");
 
     const p = document.createElement("p");
@@ -88,21 +129,22 @@ function setKeyToStorageAsync(key, value) {
   }
 })();
 
-function calculateTotal(data) {
-  const sum = (cat) =>
-    data.reduce(
-      (acc, curr) => acc + parseInt(curr[cat].replace(",", "")) || 0,
-      0
-    );
-  return {
-    country_name: "TOTAL",
-    cases: sum("cases"),
-    deaths: sum("deaths"),
-    total_recovered: sum("total_recovered"),
-    new_deaths: sum("new_deaths"),
-    new_cases: sum("new_cases"),
-  };
-}
+// function calculateTotal(data) {
+//   // const sum = (cat) =>
+//   //   data.reduce(
+//   //     (acc, curr) => acc + parseInt(curr[cat].replace(",", "")) || 0,
+//   //     0
+//   //   );
+//   const sum = (cat) => 15;
+//   return {
+//     country_name: "TOTAL",
+//     cases: sum("cases"),
+//     deaths: sum("deaths"),
+//     total_recovered: sum("total_recovered"),
+//     new_deaths: sum("new_deaths"),
+//     new_cases: sum("new_cases"),
+//   };
+// }
 
 // Store newly input keys
 
@@ -133,10 +175,8 @@ function insert2(
   if (isTotal) {
     divElemToAdd.setAttribute("id", "total");
   }
-  const isYellow =
-    parseInt(!isTotal && newCases.replace(",", "")) > 0 ? "yellow" : "";
-  const isRed =
-    parseInt(!isTotal && newDeaths.replace(",", "")) > 0 ? "red" : "";
+  const isYellow = parseInt(!isTotal && newCases) > 0 ? "yellow" : "";
+  const isRed = parseInt(!isTotal && newDeaths) > 0 ? "red" : "";
   divElemToAdd.innerHTML = `
   <div class="flex-row" role="cell">${idx} </div>
   <div class="flex-row first"  role="cell"><span class="flag-icon flag-icon-ca"></span> ${country}</div>
@@ -146,10 +186,10 @@ function insert2(
     totalRecoverd === "N/A" ? 0 : totalRecoverd
   } </div>
   <div id='newDeaths' class="flex-row ${isRed} ${isSortable}"  role="cell">${
-    isRed || isHeader || isTotal ? "+" + newDeaths : "0"
+    isRed || isHeader || isTotal ? newDeaths : "0"
   } </div>
   <div id='newCases' class="flex-row ${isYellow} ${isSortable}"  role="cell">${
-    isYellow || isHeader || isTotal ? "+" + newCases : "0"
+    isYellow || isHeader || isTotal ? newCases : "0"
   } </div>
   `;
   // if (isTotal) {
@@ -166,10 +206,17 @@ function sortBy(pred) {
   if (dataToSort) {
     clearTable();
     dataToSort.countries_stat.sort((a, b) => {
-      if (
-        parseInt(a[pred].replace(",", "").replace("+", "")) >=
-        parseInt(b[pred].replace(",", "").replace("+", ""))
-      ) {
+      let aa = a[pred];
+      let bb = b[pred];
+
+      if (aa) {
+        aa = parseInt(aa.replace(/,/g, "").replace("+", ""));
+      }
+      if (bb) {
+        bb = parseInt(bb.replace(/,/g, "").replace("+", ""));
+      }
+
+      if (aa >= bb) {
         return -1;
       } else {
         return 1;
@@ -202,6 +249,7 @@ function clearSorted() {
 }
 function afterFetchHandler() {
   document.querySelector(".lds-hourglass").style.display = "none";
+
   insert2(
     "",
     "Country",
@@ -213,10 +261,10 @@ function afterFetchHandler() {
     true
   );
 
-  const total = calculateTotal(cache.countries_stat);
+  //const total = calculateTotal(cache.countries_stat);
   insert2(
     "-",
-    total.country_name,
+    "TOTAL",
     numberWithCommas(total.cases),
     numberWithCommas(total.deaths),
     numberWithCommas(total.total_recovered),
